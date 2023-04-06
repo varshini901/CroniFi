@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#3F3D56"
+    android:id="@+id/cron_tab">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginStart="34dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/archivo_black"
+            android:letterSpacing="0.06"
+            android:text="Crontab"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+        <ImageView
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_calendar"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="9dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/ic_profile_bird"
+            android:background="@drawable/ic_ellipse_profile"/>
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/archivo_black"
+            android:textSize="15sp"
+            android:textColor="@color/white"/>
+        <ImageView
+            android:id="@+id/plus_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus_symbol"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateSet"
+        android:textAlignment="center"
+        android:textColor="@color/white"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reminder_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="125dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="40dp">
+        <ImageView
+            android:id="@+id/contact_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_contacts_book"
+            android:layout_gravity="bottom"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_user_profile"
+            android:layout_gravity="bottom" />
+        <LinearLayout
+            android:id="@+id/pro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pro"
+                android:fontFamily="@font/archivo_black"
+                android:textSize="15sp"
+                android:letterSpacing="0.06"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pro"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

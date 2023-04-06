@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">CroniFi</string>
+    <string name="get_set">
+        <br>
+            GET
+        </br>
+        <br>
+            SET
+        </br>
+        <br>
+            CRON!!
+        </br>
+    </string>
+    <string name="cronifi_quote">
+        <br>
+            Remind
+        </br>
+        <br>
+            and be
+        </br>
+        <br>
+            Reminded
+        </br>
+    </string>
+</resources>

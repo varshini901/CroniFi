@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/upper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#008C8C">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="34dp"
+            android:layout_marginTop="44dp"
+            android:fontFamily="@font/archivo_black"
+            android:letterSpacing="0.06"
+            android:text="croniFi"
+            android:textColor="#3F3D56"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/sign_in_bird"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginRight="-12dp"
+            app:srcCompat="@drawable/sign_in_bird" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="240dp"
+            android:layout_height="47dp"
+            android:layout_above="@id/number"
+            android:layout_marginStart="74dp"
+            android:layout_marginEnd="79dp"
+            android:layout_marginBottom="49dp"
+            android:background="@drawable/name_rectangle"
+            android:fontFamily="@font/archivo_black"
+            android:gravity="center"
+            android:hint="Name"
+            android:letterSpacing="0.06"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/number"
+            android:layout_width="240dp"
+            android:layout_height="47dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="74dp"
+            android:layout_marginEnd="79dp"
+            android:layout_marginBottom="74dp"
+            android:background="@drawable/name_rectangle"
+            android:fontFamily="@font/archivo_black"
+            android:gravity="center"
+            android:letterSpacing="0.06"
+            android:hint="Number"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:background="#3F3D56">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/sign_in"
+            android:layout_marginStart="34dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/archivo_black"
+            android:letterSpacing="0.06"
+            android:text="One\nStep\nAway!!"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/sign_in"
+            android:layout_width="325dp"
+            android:layout_height="62dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="#008C8C"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:letterSpacing="0.06"
+            android:text="Sign In"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</LinearLayout>

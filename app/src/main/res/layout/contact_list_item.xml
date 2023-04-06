@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_profile_bird"
+        android:background="@drawable/ic_ellipse_profile"/>
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_weight="1"-->
+<!--        android:layout_gravity="cen">-->
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="9dp"
+            android:paddingEnd="9dp"
+            android:fontFamily="@font/archivo_black"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:textColor="@color/white"/>
+
+
+<!--    </LinearLayout>-->
+
+
+    <RadioButton
+        android:id="@+id/radio_button_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+         />
+
+
+</LinearLayout>

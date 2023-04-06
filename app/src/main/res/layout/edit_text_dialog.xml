@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#3F3D56"
+    app:cardCornerRadius="20dp"
+    android:id="@+id/edit_box"
+    android:layout_marginHorizontal="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Reminder"
+        android:textColor="#008C8C"
+        android:textSize="24sp"
+        android:fontFamily="@font/archivo_black"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter the reminder to be set.."
+        android:id="@+id/edit_text"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp">
+    <Button
+        android:id="@+id/OK_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="OK"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:layout_gravity="end"
+        android:background="#008C8C"
+        android:textColor="@color/white"
+        android:layout_marginEnd="4dp"/>
+        <Button
+            android:id="@+id/cancel_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:layout_gravity="end"
+            android:background="#008C8C"
+            android:textColor="@color/white"
+            android:layout_marginStart="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

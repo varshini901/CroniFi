@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "492402359012",
+    "project_id": "cronifi",
+    "storage_bucket": "cronifi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492402359012:android:7b86a74a6840b68b1ecaf1",
+        "android_client_info": {
+          "package_name": "com.example.cronifi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "492402359012-bn2oblagnu9r39v66u3igkshs7muf4bu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpe0Gr8urnzOxsjN5sc85YvzIbk3GOrLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "492402359012-bn2oblagnu9r39v66u3igkshs7muf4bu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
