@@ -36,13 +36,12 @@ class CronTabActivity : AppCompatActivity() {
     lateinit var dialog: Dialog
     var toochselectedDate: Date? = null
     var date: String = ""
-    var tata: String = ""
     lateinit var calendar : ImageView
     val cal = Calendar.getInstance()
     val year = cal.get(Calendar.YEAR)
     val month = cal.get(Calendar.MONTH)
     val day = cal.get(Calendar.DAY_OF_MONTH)
-    val dat = (year.toString() + "-" + (month + 1) + "-" + day.toString())
+    var tata: String = (year.toString() + "-" + (month + 1) + "-" + day.toString())
     val lastdate = cal.clone() as Calendar
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -89,9 +88,9 @@ class CronTabActivity : AppCompatActivity() {
         }
         received.text = str
 
-        getRequest(userNumber, "$dat 00:00:00", receiverNumber, this)
+        getRequest(userNumber, "$tata 00:00:00", receiverNumber, this)
 //        var aa=sharedPrefs.getString("dateSelected",dat)
-        dateSet.text = dat
+        dateSet.text = tata
         var selectedDate = ""
         reminder.layoutManager = LinearLayoutManager(this)
         reminder.adapter = reminderadapter
@@ -102,12 +101,12 @@ class CronTabActivity : AppCompatActivity() {
         lateinit var ding: message
 
 
+        onDateSelected()
         Log.d("TAG", "tata: $tata")
-        val datetod = date
-        val timeStamp = "$datetod 00:00:00"
+//        val datetod = tata
+        val timeStamp = "$tata 00:00:00"
         Log.d("TAG","timestamp: $timeStamp")
 //        getRequest(userNumber, timeStamp, receiverNumber, this)
-        onDateSelected()
         contactbook.setOnClickListener {
 //            requestPermissions()
             val inten = Intent(this, CronBookActivity::class.java)
@@ -124,6 +123,7 @@ class CronTabActivity : AppCompatActivity() {
                     val selectedTime =
                         LocalTime.of(selectedHour, selectedMinute * 15).withSecond(0).withNano(0)
                     time = selectedTime.toString()
+                    Log.d("NIK",tata)
                     val msgTime = "$tata $time:00"
                     val msgTimeInUTC = convertISTtoUTC(msgTime)
                     dialog = Dialog(this)
@@ -328,11 +328,11 @@ class CronTabActivity : AppCompatActivity() {
                 tooch.set(Calendar.MONTH, month)
                 tooch.set(Calendar.DAY_OF_MONTH, day)
                 toochselectedDate = tooch.time
-                this.date = (year.toString() + "-" + (month + 1) + "-" + day.toString())
+                this.tata = (year.toString() + "-" + (month + 1) + "-" + day.toString())
 
                 val formattedDate = "$day/${month + 1}/$year"
             }
-            Log.d("TAG", "date:$date")
+//            Log.d("TAG", "date:$date")
 
             lastdate.add(Calendar.DATE, 14)
             val datePickerDialog = DatePickerDialog(this, datePickerListener, year, month, day)
@@ -344,7 +344,6 @@ class CronTabActivity : AppCompatActivity() {
         }
 
         // Do something with the selected date, for example update a text view
-        tata= date
     }
 
 }
