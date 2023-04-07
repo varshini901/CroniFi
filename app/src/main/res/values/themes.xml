@@ -11,11 +11,11 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <item name="android:timePickerStyle">@style/MyTimePickerStyle</item>
+<!--        <item name="android:timePickerStyle">@style/MyTimePickerStyle</item>-->
         <!-- Customize your theme here. -->
     </style>
-    <style name="MyTimePickerStyle" parent="android:Widget.Material.Light.TimePicker">
-        <item name="android:timePickerMode">spinner</item>
-    </style>
+<!--    <style name="MyTimePickerStyle" parent="android:Widget.Material.Light.TimePicker">-->
+<!--        <item name="android:timePickerMode">spinner</item>-->
+<!--    </style>-->
 
 </resources>

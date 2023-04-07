@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.res.Resources
 import android.view.View
 import android.widget.NumberPicker
+import android.widget.TimePicker
 
 class CustomTimePickerDialog (
     context: Context,
     private val onTimeSetListener: TimePickerDialog.OnTimeSetListener,
     private val hourOfDay: Int,
     private val minute: Int,
-) : TimePickerDialog(context, TimePickerDialog.THEME_HOLO_LIGHT,onTimeSetListener, hourOfDay, minute,true) {
+) : TimePickerDialog(context, TimePickerDialog.THEME_HOLO_DARK,onTimeSetListener, hourOfDay, minute,true) {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -20,8 +21,10 @@ class CustomTimePickerDialog (
             minValue = 0
             maxValue = 3
             displayedValues = arrayOf("00", "15", "30", "45")
+            descendantFocusability = TimePicker.FOCUS_BLOCK_DESCENDANTS
 
         }
+
     }
 
 }

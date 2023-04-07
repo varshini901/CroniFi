@@ -33,6 +33,7 @@ class CronBookActivity: AppCompatActivity() ,CronBookAdapter.OnItemSelectedListe
         val goCron:LinearLayout=findViewById(R.id.go_cron)
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.READ_CONTACTS),0)
+            return
         }
         val contentResolver=contentResolver
         val uri=ContactsContract.CommonDataKinds.Phone.CONTENT_URI
@@ -92,14 +93,7 @@ class CronBookActivity: AppCompatActivity() ,CronBookAdapter.OnItemSelectedListe
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-    }
 
     override fun onGoCronSelected() {
         finish()
