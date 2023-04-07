@@ -93,13 +93,15 @@ class CronTabActivity : AppCompatActivity() {
                 pro.visibility = View.VISIBLE
             }
             received.text = str
+        reminder.layoutManager = LinearLayoutManager(this)
+        reminder.adapter = reminderadapter
             getRequest(userNumber, "$tata 00:00:00", receiverNumber, this)
             dateSet.text = tata
-            reminder.layoutManager = LinearLayoutManager(this)
-            reminder.adapter = reminderadapter
-        var previousdate = (year.toString() + "-" + (month + 1) + "-" + day.toString())
 
+        var previousdate = (year.toString() + "-" + (month + 1) + "-" + day.toString())
+        calendar.setOnClickListener {
             onDateSelected()
+        }
             if (previousdate != tata) {
                 getRequest(
                     userNumber,
@@ -289,8 +291,8 @@ class CronTabActivity : AppCompatActivity() {
         }
     }
     private fun onDateSelected() {
-        val lastdate = cal.clone() as Calendar
-        calendar.setOnClickListener {
+           val lastdate = cal.clone() as Calendar
+
             val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 val tooch = Calendar.getInstance()
                 tooch.set(Calendar.YEAR, year)
@@ -308,7 +310,7 @@ class CronTabActivity : AppCompatActivity() {
             datePickerDialog.show()
 
             Log.d("TAG", "tooch value: $toochselectedDate")
-        }
+
     }
 
 }
