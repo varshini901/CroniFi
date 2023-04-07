@@ -1,17 +1,14 @@
 package com.example.cronifi
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -51,6 +48,7 @@ class CronTabActivity : AppCompatActivity() {
     lateinit var receiverName: String
     lateinit var receiverNumber: String
     lateinit var progressBar: ProgressBar
+    lateinit var userNumber : String
     val layoutParams = WindowManager.LayoutParams()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -65,7 +63,7 @@ class CronTabActivity : AppCompatActivity() {
         val contactSelected = sharedPrefs.getBoolean("selected", false)
         val name = sharedPrefs.getString("name", "")
         Log.d("NIK", "$name")
-        val userNumber = "91" + sharedPrefs.getString("number", "")
+        userNumber = "91" + sharedPrefs.getString("number", "")
         received = findViewById(R.id.username)
         calendar = findViewById(R.id.calendar)
         dateSet = findViewById(R.id.dateSet)
@@ -100,22 +98,23 @@ class CronTabActivity : AppCompatActivity() {
         }
         received.text = str
         reminder.layoutManager = LinearLayoutManager(this)
+        reminder.setHasFixedSize(true)
         reminder.adapter = reminderadapter
 //        progressBar.visibility = View.VISIBLE
         reminderList.clear()
 //        prog()
         getRequest(userNumber, "$tata 00:00:00", receiverNumber, this)
-        reminderadapter.notifyDataSetChanged()
-        reminder.adapter=reminderadapter
+//        reminder.adapter=reminderadapter
+//        reminderadapter.notifyDataSetChanged()
 //        dial.dismiss()
 
         dateSet.text = tata
 
-        var previousdate = (year.toString() + "-" + (month + 1) + "-" + day.toString())
+        val previousdate = (year.toString() + "-" + (month + 1) + "-" + day.toString())
         calendar.setOnClickListener {
             onDateSelected()
             reminderList.clear()
-           reminderadapter.notifyDataSetChanged()
+//           reminderadapter.notifyDataSetChanged()
             if (previousdate != tata) {
 //                progressBar.visibility = View.VISIBLE
                // prog()
@@ -127,8 +126,8 @@ class CronTabActivity : AppCompatActivity() {
                 )
             }
 
-            reminderadapter.notifyDataSetChanged()
-            reminder.adapter=reminderadapter
+//            reminderadapter.notifyDataSetChanged()
+//            reminder.adapter=reminderadapter
 
         }
 
@@ -178,7 +177,7 @@ class CronTabActivity : AppCompatActivity() {
                             )
                         sendRequest(reminder1, this@CronTabActivity)
 //                        progressBar.visibility = View.VISIBLE
-                        reminderadapter.notifyDataSetChanged()
+//                        reminderadapter.notifyDataSetChanged()
                         getRequest(
                             userNumber,
                             "$tata 00:00:00",
@@ -187,8 +186,8 @@ class CronTabActivity : AppCompatActivity() {
                         )
 
                     }
-                    reminderadapter.notifyDataSetChanged()
-                    reminder.adapter=reminderadapter
+//                    reminderadapter.notifyDataSetChanged()
+//                    reminder.adapter=reminderadapter
 
                     cancel.setOnClickListener {
                         dialog.dismiss()
@@ -238,8 +237,8 @@ class CronTabActivity : AppCompatActivity() {
                 }
 //                progressBar.visibility = View.INVISIBLE
 //                dial.dismiss()
-                reminderadapter.notifyDataSetChanged()
                 reminderadapter = ReminderAdapter(reminderList, this)
+                reminderadapter.notifyDataSetChanged()
 
             },
             Response.ErrorListener { error ->
@@ -270,6 +269,12 @@ class CronTabActivity : AppCompatActivity() {
         val stringRequest = object : StringRequest(Method.POST, url,
             Response.Listener {
                 Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                getRequest(
+                        userNumber,
+                "$tata 00:00:00",
+                receiverNumber,
+                this
+                )
             },
             Response.ErrorListener { error ->
                 Toast.makeText(context, "Fail to get response = $error", Toast.LENGTH_SHORT).show()
@@ -291,7 +296,7 @@ class CronTabActivity : AppCompatActivity() {
             }
         }
         requestQueue.add(stringRequest)
-        reminderadapter.notifyDataSetChanged()
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
