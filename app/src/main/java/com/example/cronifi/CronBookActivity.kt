@@ -31,6 +31,12 @@ class CronBookActivity: AppCompatActivity() ,CronBookAdapter.OnItemSelectedListe
         val search=findViewById<SearchView>(R.id.search_bar)
         val backButton=findViewById<ImageView>(R.id.back_button)
         val goCron:LinearLayout=findViewById(R.id.go_cron)
+        contactReyclerView.layoutManager=LinearLayoutManager(this)
+
+        val adapter = CronBookAdapter(this,sharedPreferences,goCron)
+        adapter.onItemSelectedListener=this
+        adapter.setList(contactList)
+        contactReyclerView.adapter=adapter
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.READ_CONTACTS),0)
             return
@@ -52,12 +58,9 @@ class CronBookActivity: AppCompatActivity() ,CronBookAdapter.OnItemSelectedListe
             }
 
         }
-        contactReyclerView.layoutManager=LinearLayoutManager(this)
-
-        val adapter = CronBookAdapter(this,sharedPreferences,goCron)
-        adapter.onItemSelectedListener=this
+        adapter.notifyDataSetChanged()
         adapter.setList(contactList)
-        contactReyclerView.adapter=adapter
+
         cursor?.close()
         search.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {

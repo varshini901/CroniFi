@@ -1,5 +1,6 @@
 package com.example.cronifi
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
@@ -35,74 +36,89 @@ class CronTabActivity : AppCompatActivity() {
     private val reminderList: ArrayList<Message> = ArrayList()
     private var reminderadapter = ReminderAdapter(reminderList, this)
     lateinit var dialog: Dialog
+    lateinit var dial: Dialog
+    var time = ""
     var toochselectedDate: Date? = null
     var date: String = ""
-    lateinit var calendar : ImageView
+    lateinit var calendar: ImageView
     val cal = Calendar.getInstance()
     val year = cal.get(Calendar.YEAR)
     val month = cal.get(Calendar.MONTH)
     val day = cal.get(Calendar.DAY_OF_MONTH)
     var tata: String = (year.toString() + "-" + (month + 1) + "-" + day.toString())
-    lateinit var dateSet:TextView
-    lateinit var reminder:RecyclerView
-    lateinit var receiverName:String
-    lateinit var receiverNumber:String
+    lateinit var dateSet: TextView
+    lateinit var reminder: RecyclerView
+    lateinit var receiverName: String
+    lateinit var receiverNumber: String
+    lateinit var progressBar: ProgressBar
+    val layoutParams = WindowManager.LayoutParams()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cron_tab)
         requestQueue = Volley.newRequestQueue(this)
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar = findViewById<ProgressBar>(R.id.progressBar)
 //        progressBar.setOnClickListener {
         val sharedPrefs = getSharedPreferences("CroniFi", Context.MODE_PRIVATE)
         sharedPrefs.edit().putBoolean("CronTabActivity", true).apply()
         val contactSelected = sharedPrefs.getBoolean("selected", false)
         val name = sharedPrefs.getString("name", "")
-        Log.d("NIK","$name")
-         val userNumber = "91" + sharedPrefs.getString("number", "")
+        Log.d("NIK", "$name")
+        val userNumber = "91" + sharedPrefs.getString("number", "")
         received = findViewById(R.id.username)
-        calendar= findViewById(R.id.calendar)
+        calendar = findViewById(R.id.calendar)
         dateSet = findViewById(R.id.dateSet)
-            val newReminder = findViewById<ImageView>(R.id.plus_icon)
-             reminder = findViewById(R.id.reminder_list)
-            val str: String
-            val intent = intent
-             receiverName = intent.getStringExtra("name").toString()
-            receiverNumber = intent.getStringExtra("number").toString()
+        val newReminder = findViewById<ImageView>(R.id.plus_icon)
+        reminder = findViewById(R.id.reminder_list)
+        val str: String
+        val intent = intent
+        receiverName = intent.getStringExtra("name").toString()
+        receiverNumber = intent.getStringExtra("number").toString()
 
-            val contactbook = findViewById<ImageView>(R.id.contact_book)
+        val contactbook = findViewById<ImageView>(R.id.contact_book)
 
-            val pro = findViewById<LinearLayout>(R.id.pro)
-            if (contactSelected ) {
-                str = "$receiverName's"
-                var cleanedNumber = receiverNumber.replace("[^0-9+]".toRegex(), "")
-                if (cleanedNumber.startsWith("91")) {
-                    cleanedNumber = cleanedNumber.substring(2) // Remove "91" prefix
-                } else if (cleanedNumber.startsWith("+91")) {
-                    cleanedNumber = cleanedNumber.substring(3)
-                }
-                receiverNumber = "91$cleanedNumber"
-                contactbook.visibility = View.INVISIBLE
-                pro.visibility = View.INVISIBLE
-                sharedPrefs.edit().putBoolean("selected",false).apply()
-
-            } else {
-                str = "$name's"
-                receiverNumber = userNumber
-                contactbook.visibility = View.VISIBLE
-                pro.visibility = View.VISIBLE
+        val pro = findViewById<LinearLayout>(R.id.pro)
+        if (contactSelected) {
+            str = "$receiverName's"
+            var cleanedNumber = receiverNumber.replace("[^0-9+]".toRegex(), "")
+            if (cleanedNumber.startsWith("91")) {
+                cleanedNumber = cleanedNumber.substring(2) // Remove "91" prefix
+            } else if (cleanedNumber.startsWith("+91")) {
+                cleanedNumber = cleanedNumber.substring(3)
             }
-            received.text = str
+            receiverNumber = "91$cleanedNumber"
+            contactbook.visibility = View.INVISIBLE
+            pro.visibility = View.INVISIBLE
+            sharedPrefs.edit().putBoolean("selected", false).apply()
+
+        } else {
+            str = "$name's"
+            receiverNumber = userNumber
+            contactbook.visibility = View.VISIBLE
+            pro.visibility = View.VISIBLE
+        }
+        received.text = str
         reminder.layoutManager = LinearLayoutManager(this)
         reminder.adapter = reminderadapter
-            getRequest(userNumber, "$tata 00:00:00", receiverNumber, this)
-            dateSet.text = tata
+//        progressBar.visibility = View.VISIBLE
+        reminderList.clear()
+//        prog()
+        getRequest(userNumber, "$tata 00:00:00", receiverNumber, this)
+        reminderadapter.notifyDataSetChanged()
+        reminder.adapter=reminderadapter
+//        dial.dismiss()
+
+        dateSet.text = tata
 
         var previousdate = (year.toString() + "-" + (month + 1) + "-" + day.toString())
         calendar.setOnClickListener {
             onDateSelected()
-        }
+            reminderList.clear()
+           reminderadapter.notifyDataSetChanged()
             if (previousdate != tata) {
+//                progressBar.visibility = View.VISIBLE
+               // prog()
                 getRequest(
                     userNumber,
                     "$tata 00:00:00",
@@ -110,86 +126,99 @@ class CronTabActivity : AppCompatActivity() {
                     this
                 )
             }
-            Log.d("TAG", "tata: $tata")
-            contactbook.setOnClickListener {
-                val inten = Intent(this, CronBookActivity::class.java)
-                startActivity(inten)
-            }
 
-            newReminder.setOnClickListener {
-                val calen = Calendar.getInstance()
-                val hour = calen.get(Calendar.HOUR_OF_DAY)
-                val minute = calen.get(Calendar.MINUTE)
-                var time = ""
-                val timeSetListener =
-                    TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
-                        val selectedTime =
-                            LocalTime.of(selectedHour, selectedMinute * 15).withSecond(0)
-                                .withNano(0)
-                        time = selectedTime.toString()
-                        Log.d("NIK", tata)
-                        val msgTime = "$tata $time:00"
-                        val msgTimeInUTC = convertISTtoUTC(msgTime)
-                        dialog = Dialog(this)
-//                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                        dialog.setCancelable(false)
-                        dialog.setContentView(R.layout.edit_text_dialog)
-                        val layoutParams = WindowManager.LayoutParams()
-                        layoutParams.copyFrom(dialog.window?.attributes)
-                        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
-                        dialog.window?.attributes = layoutParams
-                        val edit = dialog.findViewById<EditText>(R.id.edit_text)
-                        val ok = dialog.findViewById<Button>(R.id.OK_Button)
-                        val cancel = dialog.findViewById<Button>(R.id.cancel_Button)
-                        var msg = ""
-                        ok.setOnClickListener {
-                            msg = edit.text.toString()
-                            dialog.dismiss()
-                            val reminder1 =
-                                Reminder(
-                                    msg,
-                                    userNumber,
-                                    receiverNumber,
-                                    msgTimeInUTC
-                                )
-                            sendRequest(reminder1, this@CronTabActivity)
-                            getRequest(
+            reminderadapter.notifyDataSetChanged()
+            reminder.adapter=reminderadapter
+
+        }
+
+
+        Log.d("TAG", "tata: $tata")
+        contactbook.setOnClickListener {
+            val inten = Intent(this, CronBookActivity::class.java)
+            startActivity(inten)
+        }
+
+        newReminder.setOnClickListener {
+            val calen = Calendar.getInstance()
+            val hour = calen.get(Calendar.HOUR_OF_DAY)
+            val minute = calen.get(Calendar.MINUTE)
+            val timeSetListener =
+                TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+                    val selectedTime =
+                        LocalTime.of(selectedHour, selectedMinute * 15).withSecond(0)
+                            .withNano(0)
+                    time = selectedTime.toString()
+
+
+                    Log.d("NIK", "$tata $time:00")
+                    val msgTime = "$tata $time:00"
+                    val msgTimeInUTC = convertISTtoUTC(msgTime)
+                    dialog = Dialog(this)
+                    dialog.setCancelable(false)
+                    dialog.setContentView(R.layout.edit_text_dialog)
+                    val layoutParams = WindowManager.LayoutParams()
+                    layoutParams.copyFrom(dialog.window?.attributes)
+                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+                    dialog.window?.attributes = layoutParams
+                    val edit = dialog.findViewById<EditText>(R.id.edit_text)
+                    val ok = dialog.findViewById<Button>(R.id.OK_Button)
+                    val cancel = dialog.findViewById<Button>(R.id.cancel_Button)
+                    var msg = ""
+                    ok.setOnClickListener {
+                        msg = edit.text.toString()
+                        dialog.dismiss()
+
+                        val reminder1 =
+                            Reminder(
+                                msg,
                                 userNumber,
-                                "$tata 00:00:00",
                                 receiverNumber,
-                                this@CronTabActivity
+                                msgTimeInUTC
                             )
-                            reminderadapter.notifyDataSetChanged()
+                        sendRequest(reminder1, this@CronTabActivity)
+//                        progressBar.visibility = View.VISIBLE
+                        reminderadapter.notifyDataSetChanged()
+                        getRequest(
+                            userNumber,
+                            "$tata 00:00:00",
+                            receiverNumber,
+                            this@CronTabActivity
+                        )
 
-                        }
-                        cancel.setOnClickListener {
-                            dialog.dismiss()
-                        }
-                        dialog.show()
                     }
-                val timePickerDialog = CustomTimePickerDialog(
-                    this,
-                    timeSetListener,
-                    hour,
-                    minute
-                )
+                    reminderadapter.notifyDataSetChanged()
+                    reminder.adapter=reminderadapter
 
-                timePickerDialog.show()
-                reminderadapter.notifyDataSetChanged()
-            }
+                    cancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    dialog.show()
+                }
+
+//            reminderadapter.notifyDataSetChanged()
+            val timePickerDialog = CustomTimePickerDialog(
+                this,
+                timeSetListener,
+                hour,
+                minute
+            )
+
+            timePickerDialog.show()
+        }
 //        }
 
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun getRequest(sender: String, time: String, receiver: String, context: Context) {
         val url =
             "https://cronifi.app.v1.ngrok.dev/api/CronReminder/CronEvents?fromContactNumber=%2B$sender&timeStamp=$time&toContactNumber=%2B$receiver"
         val stringRequest = object : StringRequest(Method.GET, url,
             Response.Listener { response ->
-                messageList.clear()
+//                messageList.clear()
                 reminderList.clear()
                 reminder.removeAllViews()
-                reminderadapter.notifyDataSetChanged()
                 val jsonArray = JSONArray(response)
                 for (i in 0 until jsonArray.length()) {
 
@@ -199,11 +228,18 @@ class CronTabActivity : AppCompatActivity() {
                     val to = jsonObject.getString("to")
                     val timeStamp = jsonObject.getString("timeStamp")
                     val reminder = Reminder(message, from, to, timeStamp)
-                    messageList.add(reminder)
-
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                    val dateTime = LocalDateTime.parse(timeStamp)
+                    val output = dateTime.format(formatter)
+                    val t = convertUTCtoIST(output)
+                    val time = t.slice(11..15)
+                    val messag=Message(time,message)
+                    reminderList.add(0, messag)
                 }
-                datatoRecylerView(messageList)
+//                progressBar.visibility = View.INVISIBLE
+//                dial.dismiss()
                 reminderadapter.notifyDataSetChanged()
+                reminderadapter = ReminderAdapter(reminderList, this)
 
             },
             Response.ErrorListener { error ->
@@ -222,6 +258,8 @@ class CronTabActivity : AppCompatActivity() {
             }
         }
         requestQueue.add(stringRequest)
+
+
 
     }
 
@@ -253,6 +291,7 @@ class CronTabActivity : AppCompatActivity() {
             }
         }
         requestQueue.add(stringRequest)
+        reminderadapter.notifyDataSetChanged()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -266,6 +305,7 @@ class CronTabActivity : AppCompatActivity() {
         val dat = outputFormat.format(date)
         return dat.format(formatter)
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun convertUTCtoIST(timeInUTC: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -283,36 +323,54 @@ class CronTabActivity : AppCompatActivity() {
         for (i in items) {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
             val dateTime = LocalDateTime.parse(i.time)
-            val output=dateTime.format(formatter)
-            val t=convertUTCtoIST(output)
+            val output = dateTime.format(formatter)
+            val t = convertUTCtoIST(output)
             val time = t.slice(11..15)
-
             reminderList.add(0, Message(time, i.message))
-            reminderadapter=ReminderAdapter(reminderList,this)
             reminderadapter.notifyDataSetChanged()
         }
     }
+
     private fun onDateSelected() {
-           val lastdate = cal.clone() as Calendar
+        val lastdate = cal.clone() as Calendar
 
-            val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                val tooch = Calendar.getInstance()
-                tooch.set(Calendar.YEAR, year)
-                tooch.set(Calendar.MONTH, month)
-                tooch.set(Calendar.DAY_OF_MONTH, day)
-                toochselectedDate = tooch.time
-                this.tata = (year.toString() + "-" + (month + 1) + "-" + day.toString())
-                dateSet.text=tata
-            }
+        val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            val tooch = Calendar.getInstance()
+            tooch.set(Calendar.YEAR, year)
+            tooch.set(Calendar.MONTH, month)
+            tooch.set(Calendar.DAY_OF_MONTH, day)
+            toochselectedDate = tooch.time
+            this.tata = (year.toString() + "-" + (month + 1) + "-" + day.toString())
+            dateSet.text = tata
+//            val di= as DatePickerDialog
+//            val okButton=di.getBut
+        }
+        lastdate.add(Calendar.DATE, 14)
+        val datePickerDialog = DatePickerDialog(this, datePickerListener, year, month, day)
+        datePickerDialog.datePicker.minDate = cal.timeInMillis
+        datePickerDialog.datePicker.maxDate = lastdate.timeInMillis
+        datePickerDialog.show()
 
-            lastdate.add(Calendar.DATE, 14)
-            val datePickerDialog = DatePickerDialog(this, datePickerListener, year, month, day)
-            datePickerDialog.datePicker.minDate = cal.timeInMillis
-            datePickerDialog.datePicker.maxDate = lastdate.timeInMillis
-            datePickerDialog.show()
+        Log.d("TAG", "tooch value: $toochselectedDate")
+//        prog()
+    }
 
-            Log.d("TAG", "tooch value: $toochselectedDate")
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun onTimeSelected() {
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+
+    override fun onStart() {
+        super.onStart()
+
+    }
+//    fun prog(){
+//        dial = Dialog(this)
+//        dial.setCancelable(false)
+//        dial.setContentView(R.layout.progress_bar)
+//        dial.show()
+//    }
 
 }

@@ -13,7 +13,7 @@ class ReminderAdapter(val messages:ArrayList<Message>,val context:Context):Recyc
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.reminder_list_item,parent,false))
     }
 
-    override fun onBindViewHolder(holder: ReminderAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.TimeText.setText(messages[position].time)
         holder.MsgText.setText(messages[position].reminder)
     }

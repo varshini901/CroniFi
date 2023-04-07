@@ -34,17 +34,6 @@ class CronBookAdapter(val context: Context,val sharedPreferences: SharedPreferen
     override fun onBindViewHolder(holder: CronBookAdapter.ViewHolder, position: Int) {
         holder.name.text = items[position].name
         holder.bind()
-//        holder.itemView.setOnClickListener(){
-//            goCron.visibility=View.VISIBLE
-//            goCron.setOnClickListener(){
-//                selectedItem=items[position]
-//                val i = Intent(context, CronTabActivity::class.java)
-//                i.putExtra("name", selectedItem!!.name)
-//                i.putExtra("number", selectedItem!!.number)
-//                sharedPreferences.edit().putBoolean("selected",true).apply()
-//                context.startActivity(i)
-//            }
-//        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CronBookAdapter.ViewHolder {
          return ViewHolder(
