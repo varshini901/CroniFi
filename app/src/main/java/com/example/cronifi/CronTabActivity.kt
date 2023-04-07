@@ -45,7 +45,6 @@ class CronTabActivity : AppCompatActivity() {
     var tata: String = (year.toString() + "-" + (month + 1) + "-" + day.toString())
     lateinit var dateSet:TextView
     lateinit var reminder:RecyclerView
-//    lateinit var sharedPrefs :SharedPreferences!
     lateinit var receiverName:String
     lateinit var receiverNumber:String
     @RequiresApi(Build.VERSION_CODES.O)
@@ -59,6 +58,7 @@ class CronTabActivity : AppCompatActivity() {
         sharedPrefs.edit().putBoolean("CronTabActivity", true).apply()
         val contactSelected = sharedPrefs.getBoolean("selected", false)
         val name = sharedPrefs.getString("name", "")
+        Log.d("NIK","$name")
          val userNumber = "91" + sharedPrefs.getString("number", "")
         received = findViewById(R.id.username)
         calendar= findViewById(R.id.calendar)
@@ -73,7 +73,7 @@ class CronTabActivity : AppCompatActivity() {
             val contactbook = findViewById<ImageView>(R.id.contact_book)
 
             val pro = findViewById<LinearLayout>(R.id.pro)
-            if (contactSelected && receiverName != null) {
+            if (contactSelected ) {
                 str = "$receiverName's"
                 var cleanedNumber = receiverNumber.replace("[^0-9+]".toRegex(), "")
                 if (cleanedNumber.startsWith("91")) {
@@ -84,6 +84,7 @@ class CronTabActivity : AppCompatActivity() {
                 receiverNumber = "91$cleanedNumber"
                 contactbook.visibility = View.INVISIBLE
                 pro.visibility = View.INVISIBLE
+                sharedPrefs.edit().putBoolean("selected",false).apply()
 
             } else {
                 str = "$name's"

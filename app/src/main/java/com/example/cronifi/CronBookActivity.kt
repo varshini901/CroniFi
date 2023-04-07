@@ -94,7 +94,6 @@ class CronBookActivity: AppCompatActivity() ,CronBookAdapter.OnItemSelectedListe
     }
 
 
-
     override fun onGoCronSelected() {
         finish()
     }
