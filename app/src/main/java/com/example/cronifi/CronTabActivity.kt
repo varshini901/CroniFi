@@ -33,7 +33,7 @@ class CronTabActivity : AppCompatActivity() {
     private lateinit var requestQueue: RequestQueue
     val messageList = mutableListOf<Reminder>()
     private val reminderList: ArrayList<Message> = ArrayList()
-    private val reminderadapter = ReminderAdapter(reminderList, this)
+    private var reminderadapter = ReminderAdapter(reminderList, this)
     lateinit var dialog: Dialog
     var toochselectedDate: Date? = null
     var date: String = ""
@@ -175,6 +175,7 @@ class CronTabActivity : AppCompatActivity() {
                 )
 
                 timePickerDialog.show()
+                reminderadapter.notifyDataSetChanged()
             }
 //        }
 
@@ -287,6 +288,7 @@ class CronTabActivity : AppCompatActivity() {
             val time = t.slice(11..15)
 
             reminderList.add(0, Message(time, i.message))
+            reminderadapter=ReminderAdapter(reminderList,this)
             reminderadapter.notifyDataSetChanged()
         }
     }
